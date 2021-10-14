@@ -1,0 +1,16 @@
+eureka:
+  instance:
+    # 服务提供者地址
+    hostname: localhost
+    # 注册中心ip（根据实际，本地写localhost）
+    hostname1: localhost
+  client:
+    serviceUrl: #注册中心的注册地址
+      #      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/,http://localhost:8763/eureka/
+      defaultZone: http://admin1:admin1@${eureka.instance.hostname1}:8761/eureka/,http://admin2:admin2@${eureka.instance.hostname1}:8762/eureka/,http://admin3:admin3@${eureka.instance.hostname1}:8763/eureka/
+server:
+  port: 8759  #服务端口号
+spring:
+  application:
+    name: service-consumer #服务名称--调用的时候根据名称来调用该服务的方法
+

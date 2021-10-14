@@ -1,0 +1,38 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    #  eureka.client.registerWithEureka：false   因为自己是为注册中心，不需要自己注册自己  集群模式下改为 ture,注册到其他注册中中心
+    # 是否将该实例信息注册到其他eureka server上；如果设置为false，那么该server无法被其他server发现，但是仍然可以发现其他server
+    #  fetchRegistry：false来表明自己是一个eureka server.
+    registerWithEureka: true
+    #表示是否向eureka注册服务，即在eureka中注册自己，默认为true，此处应该设置为true,只有一个注册中心时为false；
+    #是否允许该客户端从eureka server上获取注册信息
+    fetchRegistry: true
+    serviceUrl:
+      #    集群模式：
+      defaultZone: http://admin1:admin1@${eureka.instance.hostname}:8761/eureka/,http://admin3:admin3@${eureka.instance.hostname}:8763/eureka/
+      #    单例模式：
+      #defaultZone: http://admin:admin1${eureka.instance.hostname}:8761/eureka/
+      #没有密码时，去掉security依赖，配置：    defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    #设为false，关闭自我保护，即Eureka server在云心光器件会去统计心跳失败比例在15分钟之内是否低于85%,如果低于85%，EurekaServer
+    #会将这些事例保护起来，让这些事例不会过期，但是在保护器内如果刚哈这个服务提供者非正常下线了，此时服务消费者会拿到一个无效的服务
+    #实例，此时调用会失败，对于这个问题需要服务消费者端有一些容错机制，如重试、断路器等；
+    enable-self-preservation: false
+    #扫描失效服务的间隔时间（单位是毫秒，摩恩是60*1000)，即60s
+    eviction-interval-timer-in-ms: 10000
+
+
+server:
+  #服务端口号
+  port: 8762
+
+spring:
+  application:
+    name: a-server2
+  #  #安全登入用户设置   ####******** 用户名密码，三个项目建议不一样
+  security:
+    user:
+      name: admin2
+      password: admin2
